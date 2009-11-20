@@ -28,7 +28,7 @@
 	// Register this extension on the Special:Version page for showing credits
 	$wgExtensionCredits["parserhook"][] = array(
 		"name" 			=> "pChart4mw",
-		"version"		=> "1.0.3",
+		"version"		=> "1.0.4",
 		"author" 		=> "Robert Horlings", 
 		"url" 			=> "http://www.mediawiki.org/wiki/Extension:pChart4mw",
 		"description" 	=> "Provides tags for creating different types of pChart graphs: bar, line, pie, radar, scatter and bubble charts."
@@ -74,7 +74,8 @@
 	// Absolute path where PChart is installed (only the dirname). Use $_SERVER[ "DOCUMENT_ROOT" ] 
 	// to retrieve the absolute path to the document root and dirname ( __FILE__ ) for the 
 	// absolute path to the directory where this file is.	
-	$wgPChart4mwPChartPath	= $_SERVER[ "DOCUMENT_ROOT" ] . "/pchart/pChart";
+	//$wgPChart4mwPChartPath	= $_SERVER[ "DOCUMENT_ROOT" ] . "/pchart/pChart";
+	$wgPChart4mwPChartPath	= dirname( __FILE__) . "/pChart";
 
 	// Absolute path to the font that is used for writing text into the charts.
 	// This variable contains the path and filename that directs to the TTF-file

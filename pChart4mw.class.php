@@ -401,6 +401,15 @@
 				$chartArgs[ "box" ] = ( $args[ "box" ] != "false" );
 			}
 			
+			// What color should be used for the box
+			// If the color is not correctly specified (HTML-style), the default color is used
+			if( array_key_exists( "boxcolor", $args ) ) {
+				$cArray = wfPChart4mwhtml2rgb( $args[ "boxcolor" ] );
+				if( $cArray ) {
+					$chartArgs[ "boxcolor" ] = $cArray;
+				}
+			}
+			
 			// Are the max and min values for the Y axis given?
 			if( array_key_exists( "ymax", $args ) ) {
 				$chartArgs[ "autoscaling" ] = false;
@@ -608,9 +617,10 @@
 				"ymin"				=> -1,
 				"ymax"				=> -1,
 				"box"				=> false,
+				"boxcolor"			=> array( 227, 227, 227 ),
 				
 				"grid"				=> false,
-				"gridcolor"			=> array( 119, 119, 119 ),
+				"gridcolor"			=> array( 227, 227, 227 ),
 				"gridlinesize"		=> 5,
 				"gridalpha"			=> 50,
 				
@@ -939,7 +949,7 @@
 			if( $args[ "box" ] ) {
 				$this->pChart->drawRectangle(
 					$this->graphArea[ 0 ], $this->graphArea[ 1 ], $this->graphArea[ 2 ], $this->graphArea[ 3 ],
-					$args[ "axiscolor" ][ 0 ], $args[ "axiscolor" ][ 1 ], $args[ "axiscolor" ][ 2 ]
+					$args[ "boxcolor" ][ 0 ], $args[ "boxcolor" ][ 1 ], $args[ "boxcolor" ][ 2 ]
 				);
 			}
 			
