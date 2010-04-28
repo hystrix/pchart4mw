@@ -780,7 +780,7 @@
 				$imgURL = htmlspecialchars($this->getUploadDir() . "/" . $this->filename );
 			}
 			
-			return '<p><b><img src="' . $imgURL . '" alt="pChart"></b></p>';
+			return '<p><b><img src="' . $imgURL . '" alt="pChart" /></b></p>';
 		}
 		
 		// **************************************************************************************

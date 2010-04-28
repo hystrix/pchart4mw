@@ -3,3 +3,9 @@ v1.0.3 - 13 july 2009
 
 v1.04 - 18 november 2009
 * added boxcolor parameter to determine the color of the box drawn around the chart
+
+v1.0.5 - 20 november 2009
+* 
+
+v1.0.6 - 28 april 2010
+* Improved HTML output to be XHTML compliant
