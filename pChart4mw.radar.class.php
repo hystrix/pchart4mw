@@ -27,6 +27,22 @@
 			return $chart->renderChart( $parsedText, $args );
 		}
 
+		/**
+		 * Generates a bar chart from the entered data using a parser function
+                 * and returns the HTML code to render the graph
+		 *
+		 * @param	$parser	Object	The parent parser; more advanced extensions use this to obtain the contextual Title,
+		 *							parse wiki text, expand braces, register link relationships and dependencies etc.
+		 * @returns			String	HTML code to show the bar chart
+		 */
+		public static function renderParserFunction() {
+                    // Add this class name to the function
+                    $args = func_get_args();
+                    array_unshift( $args, "pChart4mwRadar" );
+
+                    return call_user_func_array( array( 'pChart4mw', 'renderParserFunction' ), $args );
+		}
+
 		function __construct() {
 			$this->type = "radar";
 		}
