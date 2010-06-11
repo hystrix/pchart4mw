@@ -10,6 +10,6 @@ v1.0.5 - 20 november 2009
 v1.0.6 - 28 april 2010
 * Improved HTML output to be XHTML compliant
 
-v1.0.7 - 7 june 2010
+v1.1.0 - 7 june 2010
 * Implemented parser functions to show the charts in order to improve integration
   with other extensions.
