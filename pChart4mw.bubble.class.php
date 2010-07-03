@@ -232,7 +232,8 @@
 					"Serie2",
 					"Serie1",
 					$args[ "axiscolor" ][ 0 ], $args[ "axiscolor" ][ 1 ], $args[ "axiscolor" ][ 2 ], 
-					$args[ "angle" ] );
+					$args[ "angle" ],
+					$args[ "decimals" ] );
 
 				// If the user wants a grid shown, draw it
 				if( $args[ "grid" ] ) {

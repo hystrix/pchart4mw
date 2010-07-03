@@ -372,6 +372,18 @@
 				$chartArgs[ "labels" ] = ( strtolower( $args[ "labels" ] ) != "false"  );
 			}
 
+			// Should every label be printed, or should some be skipped
+			// See skiplabels parameter of pChart->drawScale()
+			if( array_key_exists( "skiplabels", $args ) && is_numeric( $args[ "skiplabels" ] ) ) {
+				$chartArgs[ "skiplabels" ] = $args[ "skiplabels" ];
+			}
+
+			// How many decimals should be shown on the Y-axis
+			// See decimals parameter of pChart->drawScale()
+			if( array_key_exists( "decimals", $args ) && is_numeric( $args[ "decimals" ] ) ) {
+				$chartArgs[ "decimals" ] = $args[ "decimals" ];
+			}
+
 			// Should the labels be printed with an angle?
 			// The angle should be between 0 and 180 degrees
 			if( array_key_exists( "angle", $args ) ) {
@@ -609,6 +621,12 @@
 
 				// Whether the labels should be printed or not.
 				"labels"			=> true,
+
+				// Should any labels be skipped?
+				"skiplabels"		=> 1,
+
+				// How many decimals should be shown on the Y-axis?
+				"decimals"			=> 0,
 
 				"angle"				=> 0,
 				"axis"				=> true,
@@ -959,8 +977,12 @@
 				$this->pDataDescription,
 				$scaleType,
 				$args[ "axiscolor" ][ 0 ], $args[ "axiscolor" ][ 1 ], $args[ "axiscolor" ][ 2 ],
-				$args[ "labels" ],
-				$args[ "angle" ], 0, TRUE );
+				$args[ "labels" ],		// drawTicks
+				$args[ "angle" ],		// angle
+				$args[ "decimals" ],	// decimals
+				TRUE,					// withMargin
+				$args[ "skiplabels" ]	// skipLabels
+			);
 
 			// If the user wants a grid shown, draw it
 			if( $args[ "grid" ] ) {
@@ -1145,10 +1167,19 @@
 		 */
 		function getWidthYLabel() {
 			if( $this->widthYLabel == null ) {
+				// Compute the size of a label with decimals, if decimal places should be shown
+				// In that case, the width of the Y-label if not only determined by the maximum number
+				if( $this->chartArgs[ "decimals" ] > 0 ) {
+					$size = wfPChart4mwtextboxSize( "0." . str_repeat( "0", $this->chartArgs[ "decimals" ] ), 0, $this->chartArgs[ "textsize" ] );
+					$this->widthYLabel = max( $this->widthYLabel, $size[ 0 ] );
+				} else {
+					$this->widthYLabel = 0;
+				}
+
 				// If the ymax is set, no computation has to be done. We can just take that value as the largest
 				if( $this->chartArgs[ "ymax" ] > -1 ) {
 					$size = wfPChart4mwtextboxSize( $this->chartArgs[ "ymax" ], 0, $this->chartArgs[ "textsize" ] );
-					$this->widthYLabel = $size[ 0 ];
+					$this->widthYLabel = max( $this->widthYLabel, $size[ 0 ] );
 				} else {
 
 					// Find the largest Y labels to determine their size
@@ -1164,7 +1195,7 @@
 
 					// Determine the size of the largest label
 					$sizeYlabels = wfPChart4mwtextboxSize( $largestYlabel, 0, $this->chartArgs[ "textsize" ] );
-					$this->widthYLabel = $sizeYlabels[ 0 ];
+					$this->widthYLabel = max( $this->widthYLabel,$sizeYlabels[ 0 ] );
 				}
 
 			}
