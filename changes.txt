@@ -1,8 +1,5 @@
-*******************************************************************************
-* Change History of pchart4mw
-*
-* Project site: http://code.google.com/p/pchart4mw
-*******************************************************************************
+v1.2.1 - 16 December 2010
+* Added new colorscheme: excel.txt
 
 v1.2.0 - 7 July 2010
 * Added new feature: parameter skiplabels to skip some labels on the x-axis.
@@ -16,12 +13,11 @@ v1.0.6 - 28 April 2010
 * Improved HTML output to be XHTML compliant
 
 v1.0.5 - 20 November 2009
-* Corrected link to MediaWiki extension page
+*
 
 v1.0.4 - 18 November 2009
-* Added new feature: parameter boxcolor to set the color of the box drawn around 
-  the chart
+* added boxcolor parameter to determine the color of the box drawn around the chart
+
 
 v1.0.3 - 13 Nuly 2009
-* Improved data parsing so lines with leading or trailing spaces are correctly 
-  handled
+* Improved data parsing so lines with leading or trailing spaces are correctly handled
