@@ -285,12 +285,16 @@
 				$chartArgs = $default;
 			}
 
-			// Check whether several parameters are set by the user
+			// Check whether several TITLE parameters are set by the user
 			if( array_key_exists( "title", $args ) ) {
 				$chartArgs[ "title" ] = $args[ "title" ];
+			}			
+			if( array_key_exists( "titlefont", $args ) && preg_match( '/\/|\\|\.\./', $args[ "titlefont" ] ) == 0) {
+				$chartArgs[ "titlefont" ] = $args[ "titlefont" ];
 			}
-
-			// What color should be used for the title
+			if( array_key_exists( "titlesize", $args ) ) {
+				$chartArgs[ "titlesize" ] = $args[ "titlesize" ];
+			}	
 			// If the color is not correctly specified (HTML-style), the default color is used
 			if( array_key_exists( "titlecolor", $args ) ) {
 				$cArray = wfPChart4mwhtml2rgb( $args[ "titlecolor" ] );
@@ -298,7 +302,14 @@
 					$chartArgs[ "titlecolor" ] = $cArray;
 				}
 			}
-
+			// Check whether several TEXT parameters are set by the user
+			if( array_key_exists( "textfont", $args ) && preg_match( '/\/|\\|\.\./', $args[ "textfont" ] ) == 0) {
+				$chartArgs[ "textfont" ] = $args[ "textfont" ];
+			}
+			if( array_key_exists( "textsize", $args ) ) {
+				$chartArgs[ "textsize" ] = $args[ "textsize" ];
+			}	
+			
 			// Determine the size of the chart
 			if( array_key_exists( "size", $args ) && trim( $args[ "size" ] ) != "" ) {
 				// Size can be set as one number, or 00x00 for width x height
@@ -320,7 +331,6 @@
 					}
 				}
 			}
-
 
 			// Are the colors set? If so, set the colors into the color palette
 			if( array_key_exists( "colors", $args ) ) {
@@ -571,7 +581,7 @@
 			if( $this->chartArgs[ "sizeX" ] < 60 + ( $this->chartArgs[ "labels" ] ? $this->getWidthYLabel() : 0 ) + 2 * $this->chartArgs[ "marginX" ] ) {
 				$this->chartArgs[ "sizeX" ] = 60 + ( $this->chartArgs[ "labels" ] ? $this->getWidthYLabel() : 0 ) + 2 * $this->chartArgs[ "marginX" ];
 			}
-			$titlesize = wfPChart4mwtextboxSize( $this->chartArgs[ "title" ], 0, $this->chartArgs[ "titlesize" ] );
+			$titlesize = wfPChart4mwtextboxSize( $this->chartArgs[ "titlefont" ], $this->chartArgs[ "title" ], 0, $this->chartArgs[ "titlesize" ] );
 			if( $this->chartArgs[ "sizeY" ] < 60 + ( $this->chartArgs[ "labels" ] ? $this->getHeightXLabel() : 0 ) + ( $this->chartArgs[ "title" ] != "" ? $titlesize[ 1 ] : 0 ) + 2 * $this->chartArgs[ "marginY" ] ) {
 				$this->chartArgs[ "sizeY" ] = 60 + ( $this->chartArgs[ "labels" ] ? $this->getHeightXLabel() : 0 ) + ( $this->chartArgs[ "title" ] != "" ? $titlesize[ 1 ] : 0 ) + 2 * $this->chartArgs[ "marginY" ];
 			}
@@ -585,8 +595,7 @@
 		 * @returns				Array	Associative array with default properties.
 		 */
 		public function getDefaultArgs() {
-			global $wgPChart4mwFontSize;
-
+			
 			$args = array(
 				// Default chart size in pixels
 				"sizeX"				=> 500,
@@ -596,13 +605,15 @@
 				"marginX"			=> 10,
 				"marginY"			=> 10,
 
-				// Fontsize used to write text into the chart
-				"textsize"			=> $wgPChart4mwFontSize,
+				// Fontsize used to write text into the chart (labels and legend)
+				"textsize"			=> 8,
+				"textfont"			=> "tahoma.ttf",
 
 				// Default title, color for the title and font size
 				"title"				=> "",
 				"titlecolor"		=> array( 119, 119, 119 ),
 				"titlesize"			=> 10,
+				"titlefont"         => "tahoma.ttf",
 
 				// Default title for the axes, unit (shown after the number, e.g. 150kg) and format (number, time, date)
 				"xtitle"			=> "",
@@ -835,7 +846,7 @@
 		 * Initializes the chart, sets the properties
 		 */
 		public function initializeChart() {
-			global $wgPChart4mwFont;
+			global $wgPChart4mwFontPath;
 
 			// Retrieve the parameters for the chart
 			$args = $this->chartArgs;
@@ -851,7 +862,7 @@
 			}
 
 			// Set default font properties
-			$pChart->setFontProperties( $wgPChart4mwFont, $args[ "textsize" ] );
+			$pChart->setFontProperties( $wgPChart4mwFontPath . "/". $args[ "textfont" ], $args[ "textsize" ] );
 
 			// Define the graph area, by computing the margins, legend size, title size etc.
 			$pChart = $this->setGraphArea($pChart);
@@ -894,17 +905,17 @@
 
 			// Add the title size if it is used
 			if( $args[ "title" ] != "" ) {
-				$size = wfPChart4mwtextboxSize( $args[ "title" ], 0, $args[ "titlesize" ] );
+				$size = wfPChart4mwtextboxSize( $args[ "titlefont" ], $args[ "title" ], 0, $args[ "titlesize" ] );
 				$top += $size[ 1 ] + $args[ "marginY" ];
 			}
 
 			if( $args[ "xtitle" ] != "" ) {
-				$size = wfPChart4mwtextboxSize( $args[ "xtitle" ], 0, $args[ "textsize" ] );
+				$size = wfPChart4mwtextboxSize( $args[ "textfont" ], $args[ "xtitle" ], 0, $args[ "textsize" ] );
 				$bottom -= ( $size[ 1 ] );
 			}
 
 			if( $args[ "ytitle" ] != "" ) {
-				$size = wfPChart4mwtextboxSize( $args[ "ytitle" ], 90, $args[ "textsize" ] );
+				$size = wfPChart4mwtextboxSize( $args[ "textfont" ], $args[ "ytitle" ], 90, $args[ "textsize" ] );
 				$left += $size[ 0 ] + $args[ "marginX" ];
 			}
 
@@ -1006,7 +1017,7 @@
 		 * Finishes the chart with a legend and title
 		 */
 		public function finishChart() {
-			global $wgPChart4mwFont;
+			global $wgPChart4mwFontPath;
 
 			$args = $this->chartArgs;
 
@@ -1017,15 +1028,15 @@
 
 			// Draw Title, if wanted by the user.
 			if( $args[ "title" ] != "" ) {
-				$size = wfPChart4mwtextboxSize( $args[ "title" ], 0, $args[ "titlesize" ] );
-				$this->pChart->setFontProperties( $wgPChart4mwFont, $args[ "titlesize" ] );
+				$size = wfPChart4mwtextboxSize( $args[ "titlefont" ], $args[ "title" ], 0, $args[ "titlesize" ] );
+				$this->pChart->setFontProperties( $wgPChart4mwFontPath . "/" . $args[ "titlefont" ], $args[ "titlesize" ] );
 				$this->pChart->drawTitle(
 					0, $args[ "marginY" ],
 					$args[ "title" ],
 					$args[ "titlecolor" ][ 0 ], $args[ "titlecolor" ][ 1 ], $args[ "titlecolor" ][ 2 ],
 					$args[ "sizeX" ], $args[ "marginY" ] + $size[ 1 ]
 				);
-				$this->pChart->setFontProperties( $wgPChart4mwFont, $args[ "textsize" ] );
+				$this->pChart->setFontProperties( $wgPChart4mwFontPath . "/" . $args[ "textfont" ], $args[ "textsize" ] );
 			}
 
 		}
@@ -1040,7 +1051,7 @@
 			$legendsize = $this->getLegendBoxSize( $this->pChart, $this->pDataDescription );
 
 			// Determine what margin has to be increased
-			$titlesize = wfPChart4mwtextboxSize( $args[ "title" ], 0, $args[ "titlesize" ] );
+			$titlesize = wfPChart4mwtextboxSize( $args[ "titlefont" ], $args[ "title" ], 0, $args[ "titlesize" ] );
 			switch( $args[ "legendpos" ] ) {
 				case "top":
 					$x = ( $args[ "sizeX" ] - $legendsize[ 0 ] ) / 2 ;
@@ -1170,7 +1181,7 @@
 				// Compute the size of a label with decimals, if decimal places should be shown
 				// In that case, the width of the Y-label if not only determined by the maximum number
 				if( $this->chartArgs[ "decimals" ] > 0 ) {
-					$size = wfPChart4mwtextboxSize( "0." . str_repeat( "0", $this->chartArgs[ "decimals" ] ), 0, $this->chartArgs[ "textsize" ] );
+					$size = wfPChart4mwtextboxSize( $this->chartArgs[ "textfont" ], "0." . str_repeat( "0", $this->chartArgs[ "decimals" ] ), 0, $this->chartArgs[ "textsize" ] );
 					$this->widthYLabel = max( $this->widthYLabel, $size[ 0 ] );
 				} else {
 					$this->widthYLabel = 0;
@@ -1178,7 +1189,7 @@
 
 				// If the ymax is set, no computation has to be done. We can just take that value as the largest
 				if( $this->chartArgs[ "ymax" ] > -1 ) {
-					$size = wfPChart4mwtextboxSize( $this->chartArgs[ "ymax" ], 0, $this->chartArgs[ "textsize" ] );
+					$size = wfPChart4mwtextboxSize( $this->chartArgs[ "textfont" ], $this->chartArgs[ "ymax" ], 0, $this->chartArgs[ "textsize" ] );
 					$this->widthYLabel = max( $this->widthYLabel, $size[ 0 ] );
 				} else {
 
@@ -1194,7 +1205,7 @@
 					}
 
 					// Determine the size of the largest label
-					$sizeYlabels = wfPChart4mwtextboxSize( $largestYlabel, 0, $this->chartArgs[ "textsize" ] );
+					$sizeYlabels = wfPChart4mwtextboxSize( $this->chartArgs[ "textfont" ], $largestYlabel, 0, $this->chartArgs[ "textsize" ] );
 					$this->widthYLabel = max( $this->widthYLabel,$sizeYlabels[ 0 ] );
 				}
 
@@ -1212,7 +1223,7 @@
 				// If the angle is 0 or 180, the height of the line is independent of the
 				// length of the text. In that case, we avoid looping over all labels
 				if( $this->chartArgs[ "angle" ] % 180 == 0 ) {
-					$size = wfPChart4mwtextboxSize( "one line", 0, $this->chartArgs[ "textsize" ] );
+					$size = wfPChart4mwtextboxSize( $this->chartArgs[ "textfont" ], "one line", 0, $this->chartArgs[ "textsize" ] );
 				} else {
 					// Find the largest X labels to determine their size
 					$largestXlabel = "";
@@ -1223,7 +1234,7 @@
 						}
 					}
 
-					$size = wfPChart4mwtextboxSize( $largestXlabel, $this->chartArgs[ "angle" ], $this->chartArgs[ "textsize" ] );
+					$size = wfPChart4mwtextboxSize( $this->chartArgs[ "textfont" ], $largestXlabel, $this->chartArgs[ "angle" ], $this->chartArgs[ "textsize" ] );
 				}
 
 				$this->widthXLabel = ceil( $size[ 0 ] );
