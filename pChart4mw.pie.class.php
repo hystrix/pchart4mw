@@ -206,7 +206,7 @@
 			$ySpace = 2 * $this->chartArgs[ "marginY" ];
 			$yMultiplier = 1;
 			
-			$percentageSize = wfPChart4mwtextboxSize( "50%" );
+			$percentageSize = wfPChart4mwtextboxSize( $this->chartArgs["textfont"], "50%", 0, $this->chartArgs["textsize"] );
 			$lineheight = $percentageSize[ 1 ];
 			if( $labels && $percentage) {
 				$xSpace += 2 * max( $this->getWidthXLabel(), $percentageSize[ 0 ] );
@@ -354,7 +354,7 @@
 				// If the angle is 0 or 180, the height of the line is independent of the 
 				// length of the text. In that case, we avoid looping over all labels
 				if( $this->chartArgs[ "angle" ] % 180 == 0 ) {
-					$size = wfPChart4mwtextboxSize( "one line" );
+					$size = wfPChart4mwtextboxSize( $this->chartArgs["textfont"], "one line", 0, $this->chartArgs["textsize"] );
 					$this->widthXLabel = ceil( $size[ 0 ] );
 				} else {
 					// Find the largest X labels to determine their size
@@ -366,10 +366,10 @@
 						}
 					}
 					
-					$size = wfPChart4mwtextboxSize( $largestXlabel, $this->chartArgs[ "angle" ] );
+					$size = wfPChart4mwtextboxSize( $this->chartArgs["textfont"], $largestXlabel, $this->chartArgs[ "angle" ], $this->chartArgs["textsize"] );
 
 					// The width should be computed not taking into account the angle
-					$simpleSize = wfPChart4mwtextboxSize( $largestXlabel );
+					$simpleSize = wfPChart4mwtextboxSize( $this->chartArgs["textfont"], $largestXlabel, 0, $this->chartArgs["textsize"] );
 					$this->widthXLabel = ceil( $simplesize[ 0 ] );
 				}
 				
