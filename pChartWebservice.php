@@ -29,17 +29,15 @@
 	
 	// Path where PChart is installed. This directory must contain a subdirectory
 	// Fonts with truetype fonts installed
-	$wgPChart4mwPChartPath	= $_SERVER[ "DOCUMENT_ROOT" ] . "/pchart/pChart";
+	$wgPChart4mwPChartPath	= dirname( __FILE__) . "/pChart";
 
-	// Font that is used for writing text into the charts.
+	// Absolute path to the font that is used for writing text into the charts.
 	// This variable contains the path and filename that directs to the TTF-file
-	$wgPChart4mwFont		= $wgPChart4mwPChartPath . "/Fonts/Tahoma.ttf";
-	
-	// Fontsize that is used for writing text into the charts.
-	$wgPChart4mwFontSize	= 8;
+	$wgPChart4mwFontPath	= dirname( __FILE__) . "/fonts";
 
-	// Fontsize that is used for writing title into the charts.
-	$wgPChart4mwTitleSize	= 10;
+	// Directory containing the color schemes. These color schemes are text files with
+	// a color on each line. Every color is a comma-separated RGB color. An example is
+	$wgPChart4mwDefaultColorSchemeDir = dirname( __FILE__ ) . "/colorschemes";
 	
 	// Make sure classes for pChart4mw and pChart itself can be loaded.
 	$currentDir = dirname(__FILE__);
