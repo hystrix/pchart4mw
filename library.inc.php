@@ -29,20 +29,17 @@
 	/**
 	 * Determines the height and width of a specified string on screen
 	 *
+	 * @param $font		String	Name of font (with file extension) used
 	 * @param $text		String	Text of which the size should be determined
 	 * @param $angle	String	Angle for showing the text
 	 * @param $size		Int		Text size for printing the text
 	 * @return			Array	Array with two elements: first element is the width of the textbox, second is the height
 	 */
-	function wfPChart4mwtextboxSize( $text, $angle = 0, $size = 0 ) {
-		global $wgPChart4mwFont, $wgPChart4mwFontSize;
-
-		if( $size == 0 ) {
-			$size = $wgPChart4mwFontSize;
-		}
-		
+	function wfPChart4mwtextboxSize( $font, $text, $angle = 0, $size = 0 ) {
+		global $wgPChart4mwFontPath;
+	
 		// Determine the bounding box using the GD library
-		$bbox = imageftbbox( $wgPChart4mwFontSize, $angle, $wgPChart4mwFont, $text );
+		$bbox = imageftbbox( $size, $angle, $wgPChart4mwFontPath . "/" . $font, $text );
 		
 		// Compute the size
 		return array(
