@@ -4,7 +4,7 @@
 ; url: http://code.google.com/p/pchart4mw/
 ;**************************************************************************************
 
-v1.3.0 - 20 December 2010
+v1.3.0 - 24 December 2010
 * Added new features: textfont, textsize, titlefont and titlesize parameters
 * Removed globals $wgPChart4mwFont and $wgPChart4mwFontSize
 * Added global $wgPChart4mwFontPath absolute path to the fonts folder
