@@ -28,7 +28,7 @@
 	// Register this extension on the Special:Version page for showing credits
 	$wgExtensionCredits["parserhook"][] = array(
 		"name" 			=> "pChart4mw",
-		"version"		=> "1.2.0",
+		"version"		=> "1.3.0",
 		"author" 		=> "Robert Horlings, Gérard de Smaele",
 		"url" 			=> "http://www.mediawiki.org/wiki/Extension:Pchart4mw",
 		"description" 	=> "Provides tags for creating different types of pChart graphs: bar, line, pie, radar, scatter and bubble charts."
@@ -73,28 +73,16 @@
 
 	// Absolute path where PChart is installed (only the dirname). Use $_SERVER[ "DOCUMENT_ROOT" ]
 	// to retrieve the absolute path to the document root and dirname ( __FILE__ ) for the
-	// absolute path to the directory where this file is.
-	//$wgPChart4mwPChartPath	= $_SERVER[ "DOCUMENT_ROOT" ] . "/pchart/pChart";
+	// absolute path to the directory where this extension file is.
+	// $wgPChart4mwPChartPath	= $_SERVER[ "DOCUMENT_ROOT" ] . "/pchart/pChart";
 	$wgPChart4mwPChartPath	= dirname( __FILE__) . "/pChart";
 
-	// Absolute path to the font that is used for writing text into the charts.
-	// This variable contains the path and filename that directs to the TTF-file
-	$wgPChart4mwFont		= $wgPChart4mwPChartPath . "/Fonts/Tahoma.ttf";
-
-	// Fontsize that is used for writing text into the charts.
-	// This fontsize is overridden by the value $chartArgs[ "textsize" ] in the getDefaultArgs() method
-	$wgPChart4mwFontSize	= 8;
+	// Absolute path to the fonts that can be used for writing text into the charts.
+	// This variable contains the path that directs to the TTF-fontfiles
+	$wgPChart4mwFontPath	= dirname( __FILE__) . "/fonts";
 
 	// Directory containing the color schemes. These color schemes are text files with
 	// a color on each line. Every color is a comma-separated RGB color. An example is
-	//
-	// 0,0,0
-	// 51,51,51
-	// 102,102,102
-	// 153,153,153
-	// 204,204,204
-	// 255,255,255
-	//
 	$wgPChart4mwDefaultColorSchemeDir = dirname( __FILE__ ) . "/colorschemes";
 
 	// Register the wfPChart4mwSetup function as setup function
@@ -136,7 +124,7 @@
 		$wgParser->setFunctionHook( 'pBars', 	array( 'pChart4mwBars', 'renderParserFunction' ) );
 		$wgParser->setFunctionHook( 'pLines', 	array( 'pChart4mwLines', 'renderParserFunction' ) );
 		$wgParser->setFunctionHook( 'pRadar', 	array( 'pChart4mwRadar', 'renderParserFunction' ) );
-                $wgParser->setFunctionHook( 'pPie', 	array( 'pChart4mwPie', 'renderParserFunction' ) );
+        $wgParser->setFunctionHook( 'pPie', 	array( 'pChart4mwPie', 'renderParserFunction' ) );
 		$wgParser->setFunctionHook( 'pScatter', array( 'pChart4mwScatter', 'renderParserFunction' ) );
 		$wgParser->setFunctionHook( 'pBubble', 	array( 'pChart4mwBubble', 'renderParserFunction' ) );
 
@@ -158,8 +146,8 @@
 		$magicWords['pBars'] = array( 0, 'pBars' );
 		$magicWords['pLines'] = array( 0, 'pLines' );
 		$magicWords['pBubble'] = array( 0, 'pBubble' );
-                $magicWords['pPie'] = array( 0, 'pPie' );
-                $magicWords['pScatter'] = array( 0, 'pScatter' );
+        $magicWords['pPie'] = array( 0, 'pPie' );
+        $magicWords['pScatter'] = array( 0, 'pScatter' );
 		$magicWords['pRadar'] = array( 0, 'pRadar' );
 
 		// unless we return true, other parser functions extensions won't get loaded.
