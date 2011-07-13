@@ -144,7 +144,7 @@
 				}
 			} else {
 				if( $this->chartArgs[ "filled" ] ) {
-					$this->pChart->drawLineGraph( 
+					$this->pChart->drawFilledLineGraph( 
 						$this->pData, 
 						$this->pDataDescription,
 						$this->chartArgs[ "opacity" ]
