@@ -4,6 +4,9 @@
 ; url: http://code.google.com/p/pchart4mw/
 ;**************************************************************************************
 
+v1.3.2 - 15 July 2011
+* Changed: Removed trailing ?> from all the php code files 
+
 v1.3.1 - 13 July 2011
 * Fixed: Parameter 'filled' now also working with non-cubic line charts
 
