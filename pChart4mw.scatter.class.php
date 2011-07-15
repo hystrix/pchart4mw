@@ -320,4 +320,3 @@
 			return $pChart->getLegendBoxSize( $dataDescription );
 		}				
 	}
-?>
