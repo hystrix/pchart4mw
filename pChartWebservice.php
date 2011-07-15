@@ -90,4 +90,3 @@
 
 	// Show the chart
 	$pChart->showChart( $data, $args );
-?>
