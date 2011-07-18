@@ -28,7 +28,7 @@
 	// Register this extension on the Special:Version page for showing credits
 	$wgExtensionCredits["parserhook"][] = array(
 		"name" 			=> "pChart4mw",
-		"version"		=> "1.3.2",
+		"version"		=> "1.3.3",
 		"author" 		=> "Robert Horlings, Gérard de Smaele",
 		"url" 			=> "http://www.mediawiki.org/wiki/Extension:Pchart4mw",
 		"description" 	=> "Provides tags for creating different types of pChart graphs: bar, line, pie, radar, scatter and bubble charts."
@@ -90,46 +90,52 @@
 	if ( defined( 'MW_SUPPORTS_PARSERFIRSTCALLINIT' ) ) {
 		$wgHooks['ParserFirstCallInit'][] = 'wfPChart4mwSetup';
 	} else {
-		$wgExtensionFunctions[] = 'wfPChart4mwSetup';
+		$wgExtensionFunctions[] = 'wfPChart4mwSetupGlobal';
 	}
 
 	// Add a hook to initialise the magic word
 	$wgHooks['LanguageGetMagic'][]       = 'wfPChart4mwMagic';
 
-
 	// Make sure classes for pChart4mw and pChart itself can be loaded.
 	$currentDir = dirname(__FILE__);
-	$wgAutoloadClasses[ 'pChart' ] 			= $wgPChart4mwPChartPath . '/pChart.class';
-	$wgAutoloadClasses[ 'pChart4mw' ] 		= $currentDir . '/pChart4mw.class.php';
-	$wgAutoloadClasses[ 'pChart4mwBars' ] 	= $currentDir . '/pChart4mw.bars.class.php';
-	$wgAutoloadClasses[ 'pChart4mwLines' ] 	= $currentDir . '/pChart4mw.lines.class.php';
-	$wgAutoloadClasses[ 'pChart4mwRadar' ] 	= $currentDir . '/pChart4mw.radar.class.php';
-	$wgAutoloadClasses[ 'pChart4mwPie' ] 	= $currentDir . '/pChart4mw.pie.class.php';
+	$wgAutoloadClasses[ 'pChart' ] 				= $wgPChart4mwPChartPath . '/pChart.class';
+	$wgAutoloadClasses[ 'pChart4mw' ] 			= $currentDir . '/pChart4mw.class.php';
+	$wgAutoloadClasses[ 'pChart4mwBars' ] 		= $currentDir . '/pChart4mw.bars.class.php';
+	$wgAutoloadClasses[ 'pChart4mwLines' ] 		= $currentDir . '/pChart4mw.lines.class.php';
+	$wgAutoloadClasses[ 'pChart4mwRadar' ] 		= $currentDir . '/pChart4mw.radar.class.php';
+	$wgAutoloadClasses[ 'pChart4mwPie' ] 		= $currentDir . '/pChart4mw.pie.class.php';
 	$wgAutoloadClasses[ 'pChart4mwScatter' ] 	= $currentDir . '/pChart4mw.scatter.class.php';
 	$wgAutoloadClasses[ 'pChart4mwBubble' ] 	= $currentDir . '/pChart4mw.bubble.class.php';
 
 	// Registers some functions to be run when pBars tag is found
-	function wfPChart4mwSetup() {
-		global $wgParser, $wgPChart4mwWebservice;
+	function wfPChart4mwSetup($parser) {
+		global $wgPChart4mwWebservice;
 
 		// Register the function hooks
-		$wgParser->setHook( 'pBars', 	array( 'pChart4mwBars', 'render' ) );
-		$wgParser->setHook( 'pLines', 	array( 'pChart4mwLines', 'render' ) );
-		$wgParser->setHook( 'pRadar', 	array( 'pChart4mwRadar', 'render' ) );
-		$wgParser->setHook( 'pPie', 	array( 'pChart4mwPie', 'render' ) );
-		$wgParser->setHook( 'pScatter', array( 'pChart4mwScatter', 'render' ) );
-		$wgParser->setHook( 'pBubble', 	array( 'pChart4mwBubble', 'render' ) );
+		$parser->setHook( 'pBars', 		array( 'pChart4mwBars', 'render' ) );
+		$parser->setHook( 'pLines', 	array( 'pChart4mwLines', 'render' ) );
+		$parser->setHook( 'pRadar', 	array( 'pChart4mwRadar', 'render' ) );
+		$parser->setHook( 'pPie', 		array( 'pChart4mwPie', 'render' ) );
+		$parser->setHook( 'pScatter', 	array( 'pChart4mwScatter', 'render' ) );
+		$parser->setHook( 'pBubble', 	array( 'pChart4mwBubble', 'render' ) );
 
 		// Register the parser functions
-		$wgParser->setFunctionHook( 'pBars', 	array( 'pChart4mwBars', 'renderParserFunction' ) );
-		$wgParser->setFunctionHook( 'pLines', 	array( 'pChart4mwLines', 'renderParserFunction' ) );
-		$wgParser->setFunctionHook( 'pRadar', 	array( 'pChart4mwRadar', 'renderParserFunction' ) );
-        $wgParser->setFunctionHook( 'pPie', 	array( 'pChart4mwPie', 'renderParserFunction' ) );
-		$wgParser->setFunctionHook( 'pScatter', array( 'pChart4mwScatter', 'renderParserFunction' ) );
-		$wgParser->setFunctionHook( 'pBubble', 	array( 'pChart4mwBubble', 'renderParserFunction' ) );
+		$parser->setFunctionHook( 'pBars', 		array( 'pChart4mwBars', 'renderParserFunction' ) );
+		$parser->setFunctionHook( 'pLines', 	array( 'pChart4mwLines', 'renderParserFunction' ) );
+		$parser->setFunctionHook( 'pRadar', 	array( 'pChart4mwRadar', 'renderParserFunction' ) );
+        $parser->setFunctionHook( 'pPie', 		array( 'pChart4mwPie', 'renderParserFunction' ) );
+		$parser->setFunctionHook( 'pScatter', 	array( 'pChart4mwScatter', 'renderParserFunction' ) );
+		$parser->setFunctionHook( 'pBubble', 	array( 'pChart4mwBubble', 'renderParserFunction' ) );
 
 		return true;
 	}
+
+    // Backwards compatibility support for old Mediawiki versions
+	function wfPChart4mwSetupGlobal() {
+		global $wgParser;
+
+        wfPChart4mwSetup($wgParser);
+    }
 
 	/**
          * Sets magic words in order to use parser functions
@@ -143,12 +149,12 @@
 		// Add the magic word
 		// The first array element is whether to be case sensitive, in this case (0) it is not case sensitive, 1 would be sensitive
 		// All remaining elements are synonyms for our parser function
-		$magicWords['pBars'] = array( 0, 'pBars' );
-		$magicWords['pLines'] = array( 0, 'pLines' );
-		$magicWords['pBubble'] = array( 0, 'pBubble' );
-        $magicWords['pPie'] = array( 0, 'pPie' );
+		$magicWords['pBars'] 	= array( 0, 'pBars' );
+		$magicWords['pLines'] 	= array( 0, 'pLines' );
+		$magicWords['pBubble'] 	= array( 0, 'pBubble' );
+        $magicWords['pPie'] 	= array( 0, 'pPie' );
         $magicWords['pScatter'] = array( 0, 'pScatter' );
-		$magicWords['pRadar'] = array( 0, 'pRadar' );
+		$magicWords['pRadar'] 	= array( 0, 'pRadar' );
 
 		// unless we return true, other parser functions extensions won't get loaded.
 		return true;
