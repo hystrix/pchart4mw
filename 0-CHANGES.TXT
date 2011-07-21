@@ -4,6 +4,9 @@
 ; url: http://code.google.com/p/pchart4mw/
 ;**************************************************************************************
 
+v1.3.3 - 21 July 2011
+* Changed: Main module pChart4mw.php uses $parser object instead of global 
+
 v1.3.2 - 15 July 2011
 * Changed: Removed trailing ?> from all the php code files 
 
