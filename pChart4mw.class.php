@@ -565,6 +565,22 @@
 				$chartArgs[ "ylabels" ] = ( strtolower( $args[ "ylabels" ] ) != "false"  );
 			}
 
+			// Threshold line
+			if( array_key_exists( "threshold", $args ) ) {
+				if ( is_numeric($args[ "threshold" ]) ) {
+					$chartArgs[ "threshold" ] = $args[ "threshold" ];
+				}
+			}
+
+			// What color should be used for the grid
+			// If the color is not correctly specified (HTML-style), the default color is used
+			if( array_key_exists( "thcolor", $args ) ) {
+				$cArray = wfPChart4mwhtml2rgb( $args[ "thcolor" ] );
+				if( $cArray ) {
+					$chartArgs[ "thcolor" ] = $cArray;
+				}
+			}
+
 			// Save the arguments
 			$this->chartArgs = $chartArgs;
 
@@ -670,7 +686,10 @@
 
 				"stacked" 			=> false,
 
-				"opacity" 			=> 100
+				"opacity" 			=> 100,
+
+				"threshold"			=> false,
+				"thcolor"			=> array( 227, 227, 227 )
 			);
 
 			// Check whether the user has set defaults in the LocalSettings.php file
@@ -707,7 +726,7 @@
 
 			// Create a unique filename for this chart
 			$this->setUniqueFileName( $this->type, $input, $args );
-
+			
 			// Check whether the file exists in cache
 			if( $wgPChart4mwCacheEnabled && $this->existsInCache() ) {
 				return $this->htmlCode();
@@ -1020,6 +1039,11 @@
 			global $wgPChart4mwFontPath;
 
 			$args = $this->chartArgs;
+
+			// If needed draw a threshold line
+			if ( $args[ "threshold" ] ) {
+				$this->pChart->drawTreshold( $args[ "threshold" ], $args[ "thcolor" ][ 0 ], $args[ "thcolor" ][ 1 ], $args[ "thcolor" ][ 2 ]);
+			}
 
 			// Draw Legend, if required by the user on the desired position
 			if( $args[ "legend" ] ) {
@@ -1377,15 +1401,15 @@
 			return array( $key, $value );
 		}
 
-                /**
-                 * Renders the chart as a parser function
-                 * 
-                 * @param  String   Class name to render the chart
+		/**
+		 * Renders the chart as a parser function
+		 * 
+		 * @param  String   Class name to render the chart
 		 * @param  Object   The parent parser; more advanced extensions use this to obtain the contextual Title,
 		 *                  parse wiki text, expand braces, register link relationships and dependencies etc.
-                 * @return String   HTML output with the chart
-                 */
-                public static function renderParserFunction() {
+		 * @return String   HTML output with the chart
+		 */
+		public static function renderParserFunction() {
 			// If no className and parser is given, return false
 			if( func_num_args() < 2 ) {
 				return false;
@@ -1406,7 +1430,7 @@
 				}
 			}
 
-                        // Call the base method and return the HTML code. The parameters noparse and isHTML are set
+			// Call the base method and return the HTML code. The parameters noparse and isHTML are set
 			// because otherwise the returned code is not handled as HTML code. See http://www.mediawiki.org/wiki/Manual:Parser_functions
 			return array( 
                             call_user_func( array( $className, 'render' ), $data, $args, $parser ),
@@ -1414,5 +1438,5 @@
                             'isHTML' => true
                         );
 
-                }
+		}
 	}
