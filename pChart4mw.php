@@ -28,7 +28,7 @@
 	// Register this extension on the Special:Version page for showing credits
 	$wgExtensionCredits["parserhook"][] = array(
 		"name" 			=> "pChart4mw",
-		"version"		=> "1.3.3",
+		"version"		=> "1.4.0",
 		"author" 		=> "Robert Horlings, Gérard de Smaele",
 		"url" 			=> "http://www.mediawiki.org/wiki/Extension:Pchart4mw",
 		"description" 	=> "Provides tags for creating different types of pChart graphs: bar, line, pie, radar, scatter and bubble charts."
