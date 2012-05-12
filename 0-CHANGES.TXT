@@ -4,6 +4,10 @@
 ; url: http://code.google.com/p/pchart4mw/
 ;**************************************************************************************
 
+v1.4.0 - 12 May 2012
+* Added new features: parameter threshold with thcolor 
+* Fixed: deprecated php function split() removed
+
 v1.3.3 - 21 July 2011
 * Changed: Main module pChart4mw.php uses $parser object instead of global 
 
